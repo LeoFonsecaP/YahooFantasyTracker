@@ -1,0 +1,43 @@
+@font-face {
+  font-family: Yahoo;
+  src: "/Assets/Yahoo.ttf";
+}
+body {
+  margin: 0;
+  font-family: Yahoo;
+}
+
+header{
+  background-color: #430297;
+  color: white;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.logo{
+  margin: auto 20px;
+  font-size: 250%;
+  flex: 1;
+}
+
+.nav{
+  margin: 20px;
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.nav li{
+  float: left;
+}
+
+.nav a{
+  font-size: 150%;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
