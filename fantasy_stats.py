@@ -1,7 +1,7 @@
 from yahoo_oauth import OAuth2
 import json
 from json import dumps, loads
-import datetime
+from datetime import datetime
 from pathlib import Path
 
 class Yahoo_Api():
@@ -19,6 +19,7 @@ class Yahoo_Api():
 
 class ConvertJson():
 
+# Used to parse the data received from the API for the current standings. Needs small rework to use percentage once they exist.
     def StandingsParse(json):
         aux = json[1]['standings'][0]['teams'] #[i]['team'] to iterate through all teams
         teams = []
@@ -33,26 +34,33 @@ class ConvertJson():
             "Percentage": aux[str(i)]['team'][2]['team_standings']['outcome_totals']['percentage'],
             #"Percentage": float(aux[str(i)]['team'][2]['team_standings']['outcome_totals']['percentage']),
             "Points For": float(aux[str(i)]['team'][2]['team_standings']['points_for']),
-            "Points Against": float(aux[str(i)]['team'][2]['team_standings']['points_against'])}
+            "Points Against": float(aux[str(i)]['team'][2]['team_standings']['points_against']),
+            }
             teams.append(team)
         #print(sorted(teams, key=lambda x: (-x['Percentage'], ['Points For'])))
 
         data = {
             "current_week": json[0]['current_week'], #works
+            "Last Updated": datetime.now().strftime("%d/%m/%y %H:%M:%S"), #works
             "standings": sorted(teams, key=lambda x: (-x['Wins'], ['Points For'])) #works, order by percentage when league starts
+
         }
         return data
+
+# Used to parse the data received from the API for the transactions. Needs rework once real transactions are made and
+# I have a real understanding of how the data is returned.
 
     def TransactionsParse(json):
         transactions = []
         for i in range(json[1]['transactions']['count']):
             transaction= {
-                "id": json[1]['transactions'][str(i)]['transaction'][0]['transaction_id'],
-                "type": json[1]['transactions'][str(i)]['transaction'][0]['type'],
+                "id": json[1]['transactions'][str(i)]['transaction'][0]['transaction_id'], #works
+                "type": json[1]['transactions'][str(i)]['transaction'][0]['type'], #works
                 }
             transactions.append(transaction)
         data = {
             "Number Of Transactions": json[1]['transactions']['count'],
+            "Last Updated": datetime.now().strftime("%d/%m/%y %H:%M:%S"), #works
             "Transactions": transactions
         }
         return data
@@ -62,6 +70,8 @@ class UpdateData():
     def __init__(self):
         print("init")
 
+# Function to update the league standings. Makes the request to the API, parses data via StadingsParse and adds to the json file.
+# Should work properly.
     def UpdateLeagueStandings(self):
         # STANDINGS
         yahoo_api._login()
@@ -70,32 +80,35 @@ class UpdateData():
         r = response.json()
         data = ConvertJson.StandingsParse(r['fantasy_content']['league'])
         week = data['current_week']
-        print('/standings/week'+ week + ".json")
-        with open('./standings/week'+ week + ".json", 'w') as outfile:
+        print(storage_path + '/standings/week'+ week + ".json")
+        with open(storage_path + '/standings/week'+ week + ".json", 'w') as outfile:
             json.dump(data, outfile)
         
         return
     
+# Function to update the league transactions. Makes the request to the API, parses data via StadingsParse and adds to the json file
+# Needs rework once real transactions are made.
     def UpdateLeagueTransactions(self):
         yahoo_api._login()
         url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/transactions'
         response = oauth.session.get(url, params={'format': 'json'})
         r = response.json()
         data = ConvertJson.TransactionsParse(r['fantasy_content']['league'])
-        path = './transactions/Transactions.json'
+        path = storage_path + '/transactions/Transactions.json'
         new = data
         if Path(path).is_file():
-            load_file = open('./transactions/Transactions.json') # load old_transactions
+            load_file = open(path) # load old_transactions
             old_transactions = json.load(load_file)
             new = dict(set(data) - set(old_transactions))
             load_file.close()
         with open(path, 'w') as outfile:
             json.dump(data, outfile)
-        with open('./transactions/newTransactions.json', 'w') as newTransactions:
+        with open(storage_path + '/transactions/newTransactions.json', 'w') as newTransactions:
             json.dump(new, newTransactions)
         
         return
 
+# Used to define the game key
     def UpdateYahooLeagueInfo(self):
         # UPDATE LEAGUE GAME ID
         yahoo_api._login()
@@ -108,15 +121,6 @@ class UpdateData():
         global game_key
         game_key = r['fantasy_content']['game'][0]['game_key'] # game key as type-string
         return
-
-def CurrentWeek():
-    current_week = 1
-    #with open('./league.json', 'r') as fobj:
-    #    info = json.load(fobj)
-    #current_week = info['fantasy_content']['league'][0]['current_week']
-    return current_week
-
-
 
 ### WHERE ALL THE MAGIC HAPPENS #########
 
@@ -138,9 +142,6 @@ def main():
     global yahoo_api
     yahoo_api = Yahoo_Api(yahoo_consumer_key, yahoo_consumer_secret, yahoo_access_key)#, yahoo_access_secret)
 
-    global current_week
-    current_week = CurrentWeek()
-
     with open('./Initial_Setup/league_info_form.txt', 'r') as f:
         rosters = eval(f.read())
 
@@ -152,6 +153,9 @@ def main():
     
     global league_id
     league_id = str(rosters['league_id'])
+
+    global storage_path
+    storage_path = './fantasytracker/src/Components/Data'
 
 #### Where the tweets happen ####
     bot = Bot(yahoo_api)
@@ -165,9 +169,9 @@ class Bot():
     def run(self):
         # Data Updates
         UD = UpdateData()
-                           
+
         UD.UpdateYahooLeagueInfo()
-        print('Yahoo League Info Updated')
+        print('League Info update - Done')                   
         UD.UpdateLeagueStandings()
         print('Standings update - Done')
         UD.UpdateLeagueTransactions()

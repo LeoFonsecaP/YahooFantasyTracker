@@ -5,6 +5,13 @@
 body {
   margin: 0;
   font-family: Yahoo;
+  height: 100vh;
+  display:flex; 
+  flex-direction:column; 
+}
+
+a:hover{
+  opacity: 80%;
 }
 
 header{
@@ -20,11 +27,16 @@ header{
   font-size: 250%;
   flex: 1;
 }
+.logo a{
+  text-decoration: none;
+  color: white;
+}
 
 .nav{
   margin: 20px;
   list-style-type: none;
   padding: 0;
+  display: flex;
   overflow: hidden;
 }
 
@@ -39,5 +51,154 @@ header{
   text-align: center;
   padding: 16px;
   text-decoration: none;
+}
+
+.icons{
+  margin: 20px;
+  margin-left: 0;
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.icons a{
+  font-size: 200%;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.icons button{
+  display: none;
+}
+
+
+.navmobile{
+  list-style-type: none;
+  flex-flow: column nowrap;
+  background-color: #430297;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding-top: 3.0rem;
+  height:fit-content;
+  width: fit-content;
+}
+
+.navmobile a{
+  font-size: 150%;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  padding-left: 0;
+  margin-left: auto;
+  text-decoration: none;
+}
+
+.navmobile button{
+  font-size: 150%;
+  margin-left: 25%;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  padding-left: 0;
+  background-color: #430297;
+  border: none;
+  font-family: Yahoo;
+}
+
+footer{
+  background-color: #430297;
+  color: white;
+  font-family: Yahoo;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;;
+  position: relative;
+  bottom: 0; 
+  margin-top: 15px;
+
+}
+footer p{
+  padding: 10px;
+  text-align: center;
+  margin: 0 2%;
+}
+
+footer p a{
+  color: white;
+}
+
+.PrevSeasons{
+  list-style: none;
+  text-align: center;
+  min-height: 75vh;
+}
+.PrevSeasons li{
+  padding:10px 0;
+}
+.PrevSeasons li a{
+  color: black;
+  text-decoration: none;
+  font-size: 200%;
+}
+.S1{
+  text-align: center;
+  min-height: 75vh;
+}
+.Season1{
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+.Season1 table{
+  margin: 0 10%;
+  border-collapse: collapse;
+}
+.Season1 table h2{
+  width: 100%;
+  margin-left:100%;
+}
+.Season1 table tr{
+  border: 2px solid black;
+}
+td, th { 
+  padding: 5px; 
+  text-align: left;
+}
+
+.Season1 .Categorias{
+  font-family: Yahoo; 
+  margin-top: 2%;
+}
+@media (max-width:750px){
+  .nav{
+    display: none;
+  }
+  .icons button {
+    color: white;
+    display: block;
+    background-color: #430297;
+    border: none;
+    font-size:170%
+  }
+  footer{
+    display: none
+  }
+  
+  .Season1 table{
+    margin: 0 2%;
+    border-collapse: collapse;
+  }
+  td, th { 
+    padding: 3px; 
+    text-align: left;
+  }
 }
 
