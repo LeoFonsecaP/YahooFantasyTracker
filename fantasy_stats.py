@@ -23,8 +23,7 @@ class ConvertJson():
     def StandingsParse(json):
         aux = json[1]['standings'][0]['teams'] #[i]['team'] to iterate through all teams
         teams = []
-        # for i in range(num_teams): for when all teams are in
-        for i in range(8):
+        for i in range(num_teams):
             team = {"Name": aux[str(i)]['team'][0][2]['name'],
             "Team logo": aux[str(i)]['team'][0][5]['team_logos'][0]['team_logo']['url'],
             "Nickname": aux[str(i)]['team'][0][19]['managers'][0]['manager']['nickname'],
@@ -49,7 +48,6 @@ class ConvertJson():
 
 # Used to parse the data received from the API for the transactions. Needs rework once real transactions are made and
 # I have a real understanding of how the data is returned.
-
     def TransactionsParse(json):
         transactions = []
         for i in range(json[1]['transactions']['count']):
@@ -65,6 +63,16 @@ class ConvertJson():
         }
         return data
 
+    def FreeAgentsParse(json, number):
+        players = []
+        for i in range(number):
+            player = {
+                "Name": json[1]['players'][str(i)]['player'][0][2]['name']['full'],
+                "Team": json[1]['players'][str(i)]['player'][0][5]['editorial_team_full_name'],
+                "Positions": json[1]['players'][str(i)]['player'][0][8]['display_position']
+            }
+            players.append(player)
+        return players
 
 class UpdateData():
     def __init__(self):
@@ -86,7 +94,7 @@ class UpdateData():
         
         return
     
-# Function to update the league transactions. Makes the request to the API, parses data via StadingsParse and adds to the json file
+# Function to update the league transactions. Makes the request to the API, parses data via TransactionsParse and adds to the json file.
 # Needs rework once real transactions are made.
     def UpdateLeagueTransactions(self):
         yahoo_api._login()
@@ -105,7 +113,20 @@ class UpdateData():
             json.dump(data, outfile)
         with open(storage_path + '/transactions/newTransactions.json', 'w') as newTransactions:
             json.dump(new, newTransactions)
-        
+        return
+
+# Function to update the league´s top free agents. Makes the request to the API, parses data via FreeAgentsParse and adds to the json file.
+# Should work properly, could change qtd for a bigger list.
+    def UpdateFreeAgents(self):
+        yahoo_api._login()
+        qtd = 5
+        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=OR;count='+ str(qtd)
+        response = oauth.session.get(url, params={'format': 'json'})
+        r = response.json()
+        data = ConvertJson.FreeAgentsParse(r['fantasy_content']['league'], qtd)
+        path = storage_path + '/freeagents/FreeAgents.json'
+        with open(path, 'w') as outfile:
+            json.dump(data, outfile)
         return
 
 # Used to define the game key
@@ -172,10 +193,12 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        UD.UpdateLeagueStandings()
+        #UD.UpdateLeagueStandings()
         print('Standings update - Done')
-        UD.UpdateLeagueTransactions()
+      #  UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
+        UD.UpdateFreeAgents()
+        print('Free Agents update - Done')
                                         
         print('Update Complete')
 
