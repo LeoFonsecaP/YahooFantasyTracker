@@ -177,6 +177,11 @@ td, th {
   font-family: Yahoo; 
   margin-top: 2%;
 }
+.History{
+  text-align: center;
+  margin-top: 5%;
+  min-height: 75vh;
+}
 @media (max-width:750px){
   .nav{
     display: none;
@@ -190,6 +195,14 @@ td, th {
   }
   footer{
     display: none
+  }
+  .Season1{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .PrevSeasons{
+    margin-left:-25px;
   }
   
   .Season1 table{

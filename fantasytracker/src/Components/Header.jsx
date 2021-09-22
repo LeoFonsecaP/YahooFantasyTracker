@@ -19,9 +19,9 @@ function Header(){
             </div>
             {isActive &&
                 <ul className = "navmobile">
-                   <li><Link to ="/PreviousSeasons">Standings</Link></li>
-                <li><Link to ="/PreviousSeasons">Transactions</Link></li>
-                <li><Link to ="/PreviousSeasons">Previous Seasons</Link></li>
+                   <li><Link to ="/PreviousSeasons" onClick={() => setActive(false)}>Standings</Link></li>
+                <li><Link to ="/PreviousSeasons" onClick={() => setActive(false)}>Transactions</Link></li>
+                <li><Link to ="/PreviousSeasons" onClick={() => setActive(false)}>Previous Seasons</Link></li>
                     <li><button onClick={() => setActive(false)}> Fechar</button></li>
                 </ul>
             }
