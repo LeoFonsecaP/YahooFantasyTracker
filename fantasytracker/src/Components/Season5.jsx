@@ -4,7 +4,6 @@ function Season5(){
             <h1>Curry é só um molho - 2016/2017 Season</h1>
             <div className="Season1">
                 <table>
-                    <h2>Final Standings</h2>
                     <tr>
                         <th>Rank</th>
                         <th>Team</th>

@@ -4,7 +4,6 @@ function Season3(){
             <h1>Cousins é um cuzao - 2018/2019 Season</h1>
             <div className="Season1">
                 <table>
-                    <h2>Final Standings</h2>
                     <tr>
                         <th>Rank</th>
                         <th>Team</th>

@@ -152,36 +152,30 @@ footer p a{
   min-height: 75vh;
 }
 .Season1{
+  margin-top: 3%;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
   overflow-x: auto;
 }
 .Season1 table{
-  margin: 0 10%;
+  margin: 0 15%;
   border-collapse: collapse;
 }
-.Season1 table h2{
-  width: 100%;
-  margin-left:100%;
-}
+
 .Season1 table tr{
   border: 2px solid black;
 }
 td, th { 
   padding: 5px; 
-  text-align: left;
-}
-
-.Season1 .Categorias{
-  font-family: Yahoo; 
-  margin-top: 2%;
+  text-align: center;
 }
 .History{
   text-align: center;
   margin-top: 5%;
   min-height: 75vh;
 }
+
 @media (max-width:750px){
   .nav{
     display: none;
@@ -196,11 +190,6 @@ td, th {
   footer{
     display: none
   }
-  .Season1{
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-  }
   .PrevSeasons{
     margin-left:-25px;
   }
@@ -211,7 +200,12 @@ td, th {
   }
   td, th { 
     padding: 3px; 
-    text-align: left;
   }
 }
-
+@media (max-width: 900px){
+  .Season1{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+}

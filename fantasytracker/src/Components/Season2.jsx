@@ -4,7 +4,6 @@ function Season2(){
             <h1>Ninguém torce pra contender - 2019/2020 Season*</h1>
             <div className="Season1">
                 <table>
-                    <h2>Final Standings</h2>
                     <tr>
                         <th>Rank</th>
                         <th>Team</th>
