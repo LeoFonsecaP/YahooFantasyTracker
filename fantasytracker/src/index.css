@@ -152,6 +152,7 @@ footer p a{
   min-height: 75vh;
 }
 .Season1{
+  justify-content: space-between;
   margin-top: 3%;
   text-align: center;
   display: flex;
@@ -159,7 +160,7 @@ footer p a{
   overflow-x: auto;
 }
 .Season1 table{
-  margin: 0 15%;
+  margin-left: 12%;
   border-collapse: collapse;
 }
 
@@ -175,7 +176,20 @@ td, th {
   margin-top: 5%;
   min-height: 75vh;
 }
-
+td{
+  width: 50px
+}
+.name{
+  width:120px;
+}
+.Categorias{
+  margin-right: 12%;
+  list-style: none;
+}
+.Categorias li{
+  font-size: large;
+  padding: 5px;
+}
 @media (max-width:750px){
   .nav{
     display: none;
@@ -200,6 +214,9 @@ td, th {
   }
   td, th { 
     padding: 3px; 
+  }
+  .Categorias{
+    margin: 0 2%;
   }
 }
 @media (max-width: 900px){
