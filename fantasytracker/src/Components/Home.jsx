@@ -1,23 +1,26 @@
-import week1 from './Data/standings/week1.json'
+import standings from './Data/standings/standings.json'
+import transactions from './Data/transactions/Transactions.json'
+import freeagents from './Data/freeagents/FreeAgents.json'
 function Home(){
     return(
         <div className="S1">
         <h1>Mickey Mouse Fantasy - 2021/2022 Season</h1>
         <div className="Season1">
             <table>
-                <h2>Current Standings</h2>
                 <tr>
                     <th>Rank</th>
+                    <th>Logo </th>
                     <th>Team</th>
-                    <th>W-L-D</th>
+                    <th>W-L</th>
                     <th>Pct (%)</th>
                     <th>Points</th>
                 </tr>
                     {
-                        week1.standings.map((team) =>
+                        standings.standings.map((team) =>
                         <tr>
                             <td>{team.Rank}</td>
-                            <td>{team.Name}</td>
+                            <td className="img"><img src={team['Team logo']} width="50px"></img></td>
+                            <td className="name">{team.Name}</td>
                             <td>{team.Wins}-{team.Losses}</td>
                             <td>{team.Percentage}</td>
                             <td>{team['Points For']}</td>
@@ -25,7 +28,24 @@ function Home(){
                         )}
             </table>
             <div className = "Categorias">
-                
+                <h1>Latest Transactions</h1>
+                {transactions.Transactions.length>5 
+                        ? (transactions.Transactions.slice(transactions.length - 5, transactions.length).reverse().map((transaction) =>
+                        <li>{transaction.id}</li>
+                        ))
+                        : (transactions.Transactions.reverse().map((transaction) =>
+                        <li>{transaction.id}</li>
+                        ))
+                }
+                <h1>Top Free Agents</h1>
+                {
+                        freeagents.map((FreeAgent) =>
+                        <div className = "transactions">
+                            <li>{FreeAgent.Name} ({FreeAgent.Positions}) - {FreeAgent.Team} </li>
+                        </div>
+                        )
+                }
+
             </div>
         </div>
     </div>

@@ -13,6 +13,7 @@ import Season3 from "./Components/Season3";
 import Season4 from "./Components/Season4";
 import Season5 from "./Components/Season5";
 import History from "./Components/History";
+import Home from "./Components/Home";
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
       <Switch>
 
         <Route exact path="/">
-          <Redirect to = "/PreviousSeasons" />
+          <Home />
         </Route>
 
         <Route path="/PreviousSeasons">
