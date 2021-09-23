@@ -87,9 +87,7 @@ class UpdateData():
         response = oauth.session.get(url, params={'format': 'json'})
         r = response.json()
         data = ConvertJson.StandingsParse(r['fantasy_content']['league'])
-        week = data['current_week']
-        print(storage_path + '/standings/week'+ week + ".json")
-        with open(storage_path + '/standings/week'+ week + ".json", 'w') as outfile:
+        with open(storage_path + "/standings/standings.json", 'w') as outfile:
             json.dump(data, outfile)
         
         return
@@ -119,7 +117,7 @@ class UpdateData():
 # Should work properly, could change qtd for a bigger list.
     def UpdateFreeAgents(self):
         yahoo_api._login()
-        qtd = 5
+        qtd = 15
         url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=OR;count='+ str(qtd)
         response = oauth.session.get(url, params={'format': 'json'})
         r = response.json()
@@ -193,9 +191,9 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        #UD.UpdateLeagueStandings()
+        UD.UpdateLeagueStandings()
         print('Standings update - Done')
-      #  UD.UpdateLeagueTransactions()
+        #UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
         UD.UpdateFreeAgents()
         print('Free Agents update - Done')
