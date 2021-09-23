@@ -13,84 +13,84 @@ function Season2(){
                     </tr>
                     <tr>
                         <td>1</td>
-                        <td>CAMPEÃO TEMP 19/20</td>
+                        <td className="name">CAMPEÃO TEMP 19/20</td>
                         <td>17-2</td>
                         <td>89.5</td>
                         <td>25379.80</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>Rockit</td>
+                        <td className="name">Rockit</td>
                         <td>14-5</td>
                         <td>73.7</td>
                         <td>23935.50</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>RIP KOBE</td>
+                        <td className="name">RIP KOBE</td>
                         <td>14-5</td>
                         <td>73.7</td>
                         <td>23394.50</td>
                     </tr>
                     <tr>
                         <td>4</td>
-                        <td>U LOST TO JOE INGLES</td>
+                        <td className="name">U LOST TO JOE INGLES</td>
                         <td>13-6</td>
                         <td>68.4</td>
                         <td>23281.20</td>
                     </tr>
                     <tr>
                         <td>5</td>
-                        <td>SP Jaguars</td>
+                        <td className="name">SP Jaguars</td>
                         <td>12-7</td>
                         <td>63.2</td>
                         <td>23705.50</td>
                     </tr>
                     <tr>
                         <td>6</td>
-                        <td>New York TitaKnicks</td>
+                        <td className="name">New York TitaKnicks</td>
                         <td>10-9</td>
                         <td>52.6</td>
                         <td>23439.60</td>
                     </tr>
                     <tr>
                         <td>7</td>
-                        <td>Atanktla</td>
+                        <td className="name">Atanktla</td>
                         <td>9-10</td>
                         <td>47.4</td>
                         <td>20906.50</td>
                     </tr>
                     <tr>
                         <td>8</td>
-                        <td>Sexland</td>
+                        <td className="name">Sexland</td>
                         <td>8-11</td>
                         <td>42.1</td>
                         <td>21951.10</td>
                     </tr>
                     <tr>
                         <td>9</td>
-                        <td>LuKp Dynamic Duo</td>
+                        <td className="name">LuKp Dynamic Duo</td>
                         <td>8-11</td>
                         <td>42.1</td>
                         <td>19193.10</td>
                     </tr>
                     <tr>
                         <td>10</td>
-                        <td>Minas Storm</td>
+                        <td className="name">Minas Storm</td>
                         <td>4-15</td>
                         <td>21.1</td>
                         <td>16801.70</td>
                     </tr>
                     <tr>
                         <td>11</td>
-                        <td>Seattle Super Tank</td>
+                        <td className="name">Seattle Super Tank</td>
                         <td>4-15</td>
                         <td>21.1</td>
                         <td>15698.10</td>
                     </tr>
                     <tr>
                         <td>12</td>
-                        <td>San Andread Brick</td>
+                        <td className="name">San Andread Brick</td>
                         <td>1-18</td>
                         <td>0.53</td>
                         <td>11688.80</td>

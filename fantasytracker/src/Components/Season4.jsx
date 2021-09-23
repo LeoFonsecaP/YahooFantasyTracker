@@ -13,42 +13,42 @@ function Season4(){
                     </tr>
                     <tr>
                         <td>1</td>
-                        <td>Westbrook Sucks</td>
+                        <td className="name">Westbrook Sucks</td>
                         <td>8-13</td>
                         <td>38.1</td>
                         <td>22986.20</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>Whole team injured</td>
+                        <td className="name">Whole team injured</td>
                         <td>12-9</td>
                         <td>57.1</td>
                         <td>24426.70</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>MeloPinto Team</td>
+                        <td className="name">MeloPinto Team</td>
                         <td>20-1</td>
                         <td>95.2</td>
                         <td>27673.40</td>
                     </tr>
                     <tr>
                         <td>4</td>
-                        <td>O Nick é demente</td>
+                        <td className="name">O Nick é demente</td>
                         <td>12-9</td>
                         <td>57.1</td>
                         <td>24965.95</td>
                     </tr>
                     <tr>
                         <td>5</td>
-                        <td>Pet´s são Animais</td>
+                        <td className="name">Pet´s são Animais</td>
                         <td>5-16</td>
                         <td>23.8</td>
                         <td>18966.05</td>
                     </tr>
                     <tr>
                         <td>6</td>
-                        <td>Miami in 3</td>
+                        <td className="name">Miami in 3</td>
                         <td>6-15</td>
                         <td>28.6</td>
                         <td>19871.25</td>

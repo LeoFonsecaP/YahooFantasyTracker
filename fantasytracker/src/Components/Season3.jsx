@@ -13,21 +13,21 @@ function Season3(){
                     </tr>
                     <tr>
                         <td>1</td>
-                        <td>Mata-mata é melhor</td>
+                        <td className="name">Mata-mata é melhor</td>
                         <td>-</td>
                         <td>-</td>
                         <td>40403.55</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>Roberson DPOY</td>
+                        <td className="name">Roberson DPOY</td>
                         <td>-</td>
                         <td>-</td>
                         <td>37350.70</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>Mau caráter team</td>
+                        <td className="name">Mau caráter team</td>
                         <td>-</td>
                         <td>-</td>
                         <td>35018.35</td>

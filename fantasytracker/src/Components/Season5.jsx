@@ -13,28 +13,28 @@ function Season5(){
                     </tr>
                     <tr>
                         <td>1</td>
-                        <td>Jd. SP Hustlers</td>
+                        <td className="name">Jd. SP Hustlers</td>
                         <td>56-43-0</td>
                         <td>56.6</td>
                         <td>-</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>Santana Titans</td>
+                        <td className="name">Santana Titans</td>
                         <td>64-35-0</td>
                         <td>64.6</td>
                         <td>-</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>Pedroheguba´s Team</td>
+                        <td className="name">Pedroheguba´s Team</td>
                         <td>43-55-1</td>
                         <td>43.9</td>
                         <td>-</td>
                     </tr>
                     <tr>
                         <td>4</td>
-                        <td>Ipiranga Dragons</td>
+                        <td className="name">Ipiranga Dragons</td>
                         <td>34-64-1</td>
                         <td>34.8</td>
                         <td>-</td>
