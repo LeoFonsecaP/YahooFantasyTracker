@@ -40,7 +40,7 @@ function Home(){
                 <h1>Top Free Agents</h1>
                 {
                         freeagents.map((FreeAgent) =>
-                        <div className = "transactions">
+                        <div className = "freeagents">
                             <li>{FreeAgent.Name} ({FreeAgent.Positions}) - {FreeAgent.Team} </li>
                         </div>
                         )
