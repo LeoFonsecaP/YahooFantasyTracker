@@ -225,6 +225,7 @@ class UpdateData():
             r = response.json()
             data.append(ConvertJson.RosterParse(r['fantasy_content']['team'])) #Add roster info to data
 
+        data = sorted(data, key=lambda x: x['Name'])
         path = storage_path + '/rosters/Rosters.json' # define path to the file containing the rosters
         with open(path, 'w') as outfile:
             json.dump(data, outfile) #stores the rosters in Rosters.json
@@ -312,17 +313,17 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        UD.UpdateLeagueStandings()
+        #UD.UpdateLeagueStandings()
         print('Standings update - Done')
         #UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
-        UD.UpdateFreeAgents()
+        #UD.UpdateFreeAgents()
         print('Free Agents update - Done')
         #UD.MockDraft()
         print('Draft update - Done')
         UD.UpdateRosters()
         print('Rosters update - Done')
-        UD.UpdateMonthlyStandings()
+        #UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')   
         print('Update Complete')
 
