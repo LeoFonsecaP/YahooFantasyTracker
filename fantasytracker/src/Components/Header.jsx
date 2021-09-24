@@ -24,7 +24,7 @@ function Header(){
                    <li><Link to ="/Standings" onClick={() => setActive(false)}>Standings</Link></li>
                     <li><Link to ="/Transactions" onClick={() => setActive(false)}>Transactions</Link></li>
                     <li><Link to ="/PreviousSeasons" onClick={() => setActive(false)}>Previous Seasons</Link></li>
-                    <li><button onClick={() => setActive(false)}> Fechar</button></li>
+                    <li><button onClick={() => setActive(false)}> Close</button></li>
                 </ul>
             }
         </header>
