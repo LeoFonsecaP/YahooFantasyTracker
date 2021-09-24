@@ -6,7 +6,7 @@ function Header(){
     return(
         <header>
             <div className = "logo">
-            <Link to = "/">Fantasy Tracker</Link>
+            <Link to = "/" onClick={() => setActive(false)}>Fantasy Tracker</Link>
             </div>
             <ul className = "nav">
                 <li><Link to ="/Rosters">Rosters</Link></li>
