@@ -23,7 +23,7 @@ function App() {
       <Switch>
 
         <Route exact path="/">
-          <Redirect to = "/PreviousSeasons" />
+          <Home />
         </Route>
 
         <Route path="/PreviousSeasons">
