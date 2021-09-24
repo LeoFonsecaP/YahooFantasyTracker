@@ -16,6 +16,7 @@ import History from "./Components/History";
 import Home from "./Components/Home";
 import Rosters from "./Components/Rosters";
 import Standings from "./Components/Standings";
+import Transactions from "./Components/Transactions";
 
 function App() {
   return (
@@ -55,6 +56,10 @@ function App() {
 
         <Route path="/Standings">
           <Standings />
+        </Route>
+        
+        <Route path="/Transactions">
+          <Transactions />
         </Route>
 
         <Route>

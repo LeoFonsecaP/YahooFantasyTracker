@@ -11,11 +11,11 @@ function Header(){
             <ul className = "nav">
                 <li><Link to ="/Rosters">Rosters</Link></li>
                 <li><Link to ="/Standings">Standings</Link></li>
-                <li><Link to ="/PreviousSeasons">Transactions</Link></li>
+                <li><Link to ="/Transactions">Transactions</Link></li>
                 <li><Link to ="/PreviousSeasons">Previous Seasons</Link></li>
             </ul>
             <div className="icons">
-                <a href ="https://twitter.com/FantasyMickey" target="_blank" className="fa fa-twitter"></a>
+                <a href ="https://twitter.com/JowNPSE" target="_blank" className="fa fa-twitter"></a>
                 <button className="fa fa-bars menu" onClick={() => setActive(true)}></button>
             </div>
             {isActive &&

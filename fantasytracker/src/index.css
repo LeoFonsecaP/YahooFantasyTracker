@@ -230,6 +230,13 @@ td{
 .standing table tr{
   border: 2px solid black;
 }
+
+.transactions img{
+width: 70%;
+display: block;
+margin: 20px auto;
+}
+
 @media (max-width:750px){
   .nav{
     display: none;
