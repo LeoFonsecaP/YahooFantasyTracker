@@ -313,18 +313,20 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        #UD.UpdateLeagueStandings()
-        print('Standings update - Done')
-        #UD.UpdateLeagueTransactions()
+        if(datetime.today().strftime('%A') == 'Monday'):
+            UD.UpdateLeagueStandings()
+            print('Standings update - Done')
+            UD.UpdateMonthlyStandings()
+            print('Monthly Standings update - Done')
+         
+        UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
-        #UD.UpdateFreeAgents()
+        UD.UpdateFreeAgents()
         print('Free Agents update - Done')
         #UD.MockDraft()
-        print('Draft update - Done')
+        #print('Draft update - Done')
         UD.UpdateRosters()
         print('Rosters update - Done')
-        #UD.UpdateMonthlyStandings()
-        print('Monthly Standings update - Done')   
         print('Update Complete')
 
 if __name__ == "__main__":
