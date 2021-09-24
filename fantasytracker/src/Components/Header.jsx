@@ -9,7 +9,7 @@ function Header(){
             <Link to = "/">Fantasy Tracker</Link>
             </div>
             <ul className = "nav">
-                <li><Link to ="/PreviousSeasons">Rosters</Link></li>
+                <li><Link to ="/Rosters">Rosters</Link></li>
                 <li><Link to ="/PreviousSeasons">Standings</Link></li>
                 <li><Link to ="/PreviousSeasons">Transactions</Link></li>
                 <li><Link to ="/PreviousSeasons">Previous Seasons</Link></li>

@@ -14,6 +14,7 @@ import Season4 from "./Components/Season4";
 import Season5 from "./Components/Season5";
 import History from "./Components/History";
 import Home from "./Components/Home";
+import Rosters from "./Components/Rosters";
 
 
 function App() {
@@ -47,8 +48,13 @@ function App() {
         <Route path="/History">
           <History />
         </Route>
+
+        <Route path="/Rosters">
+          <Rosters />
+        </Route>
+
         <Route>
-          <Redirect to = "/PreviousSeasons" />
+          <Redirect to = "/Home" />
         </Route>
       </Switch>
       <Footer />
