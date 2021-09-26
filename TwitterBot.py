@@ -18,6 +18,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 data_path = './fantasytracker/src/Components/Data' #Path to data folders
+draft = False
 
 # Handles tweets
 # ------------------------------------------------------------------------------------------------ #☺
@@ -91,3 +92,18 @@ if(len(Transactions) > 0): # If there are new transactions
     api.update_status(tweet)
     print("Tweeted Transactions")
     time.sleep(3)
+
+
+if(draft):
+    with open("./MockDraft.json") as M: # Loads Transactions Information
+        MockDraft = json.load(M)
+
+    tweet = "MOCK DRAFT 1.0 \n\n"
+    original_tweet = api.update_status(tweet)
+
+    for i in range(13): #Number of rounds
+        tweet = "Round #" + str(i+1) + '\n'
+        for j in range(12*i, 12*i + 12): # gets entire round, 12 teams
+            tweet += '#' + str(j+1) + ' - ' + MockDraft[j]['Name'] + "\n"
+        original_tweet = api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id)
+        time.sleep(3)
