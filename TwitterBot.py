@@ -44,7 +44,7 @@ if(datetime.today().strftime('%A') == 'Monday'): #Tweets made on monday
     api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the original tweet with bottom 6 teams
 
     print("Tweeted Standings")
-    time.sleep(3)
+    time.sleep(30)
 
     with open(data_path + "/standings/"+ datetime.now().strftime("%b") + ".json") as S: # Loads Monthly Standings Information
         Monthly = json.load(S)
@@ -66,7 +66,7 @@ if(datetime.today().strftime('%A') == 'Monday'): #Tweets made on monday
     api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the original tweet with bottom 6 teams
 
     print("Tweeted Monthly Standings")
-    time.sleep(3)
+    time.sleep(30)
 
     with open(data_path + "/freeagents/FreeAgents.json") as FA: # Loads Free Agents Information
         FreeAgents = json.load(FA)
@@ -78,7 +78,7 @@ if(datetime.today().strftime('%A') == 'Monday'): #Tweets made on monday
         tweet += " (" + FreeAgents[i]['Positions'] + ") - " + FreeAgents[i]['Team'] + "\n"
     api.update_status(tweet)
     print("Tweeted top free agents")
-    time.sleep(3)
+    time.sleep(30)
 
 # Everyday tweets
 
@@ -91,7 +91,6 @@ if(len(Transactions) > 0): # If there are new transactions
         tweet += Transactions[i]['type']
     api.update_status(tweet)
     print("Tweeted Transactions")
-    time.sleep(3)
 
 
 if(draft):
@@ -106,4 +105,4 @@ if(draft):
         for j in range(12*i, 12*i + 12): # gets entire round, 12 teams
             tweet += '#' + str(j+1) + ' - ' + MockDraft[j]['Name'] + "\n"
         original_tweet = api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id)
-        time.sleep(3)
+        time.sleep(30)
