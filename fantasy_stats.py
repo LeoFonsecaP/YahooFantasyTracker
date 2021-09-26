@@ -316,9 +316,9 @@ class Bot():
         if(datetime.today().strftime('%A') == 'Monday'):
             UD.UpdateLeagueStandings()
             print('Standings update - Done')
-            UD.UpdateMonthlyStandings()
-            print('Monthly Standings update - Done')
          
+        UD.UpdateMonthlyStandings()
+        print('Monthly Standings update - Done')
         UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
         UD.UpdateFreeAgents()

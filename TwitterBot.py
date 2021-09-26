@@ -1,6 +1,7 @@
 import tweepy
 import json
-import datetime
+from datetime import datetime
+import time
 
 # Loads credentials from auth file
 with open('./auth/botauth.json') as json_file:
@@ -19,16 +20,74 @@ api = tweepy.API(auth)
 data_path = './fantasytracker/src/Components/Data' #Path to data folders
 
 # Handles tweets
+# ------------------------------------------------------------------------------------------------ #☺
+if(datetime.today().strftime('%A') == 'Monday'): #Tweets made on monday
 
-with open(data_path + "/freeagents/FreeAgents.json") as FA: # Loads Free Agents Information
-    FreeAgents = json.load(FA)
+    with open(data_path + "/standings/standings.json") as S: # Loads Current Standings Information
+        Standings = json.load(S)
+    
+    current_week = Standings['current_week'] # Saves current week
 
-with open(data_path + "/standings/Standings.json") as S: # Loads Current Standings Information
-    Standings = json.load(S)
+    tweet = "WEEK " + current_week + " STANDINGS\n\n" # Starts Standings Tweet
+    for i in range(0, 6): # Adds top 6 teams
+        tweet += str(i+1) + " - " + Standings['standings'][i]['Name']
+        tweet += " (" + str(Standings['standings'][i]['Wins']) + " - " + str(Standings['standings'][i]['Losses']) + ") \n"
 
-current_week = Standings['current_week']
-tweet = "WEEK " + current_week + " TOP FREE AGENTS!! \n"
+    original_tweet = api.update_status(tweet) #Tweets top 6 teams
+    
+    tweet = "" # Starts an empty tweet
+    for i in range(6, 12): # Adds bottom 6 teams
+        tweet += str(i+1) + " - " + Standings['standings'][i]['Name']
+        tweet += " (" + str(Standings['standings'][i]['Wins']) + " - " + str(Standings['standings'][i]['Losses']) + ") \n"
 
-for i in range(5):
-    tweet += str(i+1) + " - " + FreeAgents[i]['Name'] + " (" + FreeAgents[i]['Positions'] + ") - " + FreeAgents[i]['Team'] + "\n"
+    api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the original tweet with bottom 6 teams
 
+    print("Tweeted Standings")
+    time.sleep(3)
+
+    with open(data_path + "/standings/"+ datetime.now().strftime("%b") + ".json") as S: # Loads Monthly Standings Information
+        Monthly = json.load(S)
+    
+    current_month = datetime.now().strftime("%B").upper() # Current month name
+    
+    tweet = current_month + " STANDINGS\n\n" # Starts Standings Tweet
+    for i in range(0, 6): # Adds top 6 teams
+        tweet += str(i+1) + " - " + Monthly[i]['Name']
+        tweet += " (" + str(Monthly[i]['Wins']) + " - " + str(Monthly[i]['Losses']) + ") \n"
+
+    original_tweet = api.update_status(tweet) #Tweets top 6 teams
+        
+    tweet = "" # Starts an empty tweet
+    for i in range(6, 12): # Adds bottom 6 teams
+        tweet += str(i+1) + " - " + Monthly[i]['Name']
+        tweet += " (" + str(Monthly[i]['Wins']) + " - " + str(Monthly[i]['Losses']) + ") \n"
+        
+    api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the original tweet with bottom 6 teams
+
+    print("Tweeted Monthly Standings")
+    time.sleep(3)
+
+    with open(data_path + "/freeagents/FreeAgents.json") as FA: # Loads Free Agents Information
+        FreeAgents = json.load(FA)
+    
+    tweet = "WEEK " + current_week + " TOP FREE AGENTS!!\n\n" # Starts Free Agents Tweet
+
+    for i in range(5): # Adds top 5 Free agents to the tweet
+        tweet += str(i+1) + " - " + FreeAgents[i]['Name']
+        tweet += " (" + FreeAgents[i]['Positions'] + ") - " + FreeAgents[i]['Team'] + "\n"
+    api.update_status(tweet)
+    print("Tweeted top free agents")
+    time.sleep(3)
+
+# Everyday tweets
+
+with open(data_path + "/transactions/newTransactions.json") as T: # Loads Transactions Information
+    Transactions = json.load(T)
+
+if(len(Transactions) > 0): # If there are new transactions
+    tweet = "LATEST TRANSACTIONS:\n\n"
+    for i in range(len(Transactions)):
+        tweet += Transactions[i]['type']
+    api.update_status(tweet)
+    print("Tweeted Transactions")
+    time.sleep(3)
