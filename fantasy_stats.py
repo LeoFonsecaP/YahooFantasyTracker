@@ -237,8 +237,8 @@ class UpdateData():
         data = [] #receives all the data
         yahoo_api._login()
         #One request can only take up to 25, so needs a few. Was bugged with 25, so switched to 14 and it worked
-        for i in range(14):
-            url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=OR;count=13;start=' + str(i * 14) +'/draft_analysis'
+        for i in range(13):
+            url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=OR;count=13;start=' + str(i * 13) +'/draft_analysis'
             response = oauth.session.get(url, params={'format': 'json'})
             r = response.json()
             data += ConvertJson.DraftParse(r['fantasy_content']['league'], 13)
