@@ -75,10 +75,9 @@ class ConvertJson():
         return data
         
 # Used to parse the data received from the API for the free agents. Should need no rework.
-    def FreeAgentsParse(json, number):
-        print(json)
+    def FreeAgentsParse(json):
         players = []
-        for i in range(number):
+        for i in range(len(json[1]['players'])):
             player = {
                 "Name": json[1]['players'][str(i)]['player'][0][2]['name']['full'], #works
                 "Team": json[1]['players'][str(i)]['player'][0][5]['editorial_team_full_name'], #works
@@ -205,15 +204,14 @@ class UpdateData():
         return
 
 # Function to update the league´s top free agents. Makes the request to the API, parses data via FreeAgentsParse and adds to the json file.
-# Should work properly, could change qtd for a bigger list.
+# Not returning any players, check latter, could change qtd for a bigger list.
     def UpdateFreeAgents(self):
         yahoo_api._login()
         qtd = 15 # Ammount of free agents pulled from API
-        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=K;sort=OR;count='+ str(qtd)
+        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=OR;count='+ str(qtd)
         response = oauth.session.get(url, params={'format': 'json'})
         r = response.json()
-
-        data = ConvertJson.FreeAgentsParse(r['fantasy_content']['league'], qtd)
+        data = ConvertJson.FreeAgentsParse(r['fantasy_content']['league'])
 
         path = storage_path + '/freeagents/FreeAgents.json' # define path to the file containing the free agents
         with open(path, 'w') as outfile:
@@ -221,12 +219,12 @@ class UpdateData():
         return
 
 # Function to update the rosters. Makes the request to the API, parses data via RostersParse and adds to the json file.
-# Should work, need to get the player data after the draft.
+# Works.
     def UpdateRosters(self):
         yahoo_api._login()
         data = [] #receives all the data
         #Needs one request per roster, takes a while.
-        for i in range(1, 12):
+        for i in range(1, 13):
             url = 'https://fantasysports.yahooapis.com/fantasy/v2/team/'+game_key+'.l.'+league_id+'.t.' + str(i) + '/roster'
             response = oauth.session.get(url, params={'format': 'json'})
             r = response.json()
@@ -320,17 +318,17 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        #UD.UpdateLeagueStandings()
+        UD.UpdateLeagueStandings()
         print('Standings update - Done') 
-        #UD.UpdateMonthlyStandings()
+        UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')
-        #UD.UpdateLeagueTransactions()
+        UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
-        #UD.UpdateFreeAgents()
+        UD.UpdateFreeAgents() # Not getting any players
         print('Free Agents update - Done')
         #UD.MockDraft()
         #print('Draft update - Done')
-        UD.UpdateRosters()
+        UD.UpdateRosters() #Works
         print('Rosters update - Done')
         print('Update Complete')
 
