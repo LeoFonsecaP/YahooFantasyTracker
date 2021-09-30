@@ -19,10 +19,11 @@ api = tweepy.API(auth)
 
 data_path = './fantasytracker/src/Components/Data' #Path to data folders
 draft = False
+season_started = False
 
 # Handles tweets
 # ------------------------------------------------------------------------------------------------ #☺
-if(datetime.today().strftime('%A') == 'Monday'): #Tweets made on monday
+if(datetime.today().strftime('%A') == 'Monday' and season_started == True): #Tweets made on monday
 
     with open(data_path + "/standings/standings.json") as S: # Loads Current Standings Information
         Standings = json.load(S)
@@ -97,7 +98,7 @@ if(draft):
     with open("./MockDraft.json") as M: # Loads Transactions Information
         MockDraft = json.load(M)
 
-    tweet = "MOCK DRAFT 1.0 \n\n"
+    tweet = "MOCK DRAFT 1.1 \n\n"
     original_tweet = api.update_status(tweet)
 
     for i in range(13): #Number of rounds

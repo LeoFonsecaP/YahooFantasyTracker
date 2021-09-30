@@ -1,4 +1,5 @@
 import rosters from './Data/rosters/Rosters.json'
+console.log(rosters)
 function Rosters(){
     return(
         <div className="rosters">
@@ -9,7 +10,7 @@ function Rosters(){
                         <h3>{roster.Nickname}</h3>
                         {roster.players.map((player) =>
                             <div className="play">
-                                <p>Needs work once draft is done</p>
+                                <p><b>{player.Name} ({player.Positions}) </b>- {player.Team}</p>
                             </div>
                         )}
                     </div>

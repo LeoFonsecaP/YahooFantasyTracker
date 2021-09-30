@@ -76,6 +76,7 @@ class ConvertJson():
         
 # Used to parse the data received from the API for the free agents. Should need no rework.
     def FreeAgentsParse(json, number):
+        print(json)
         players = []
         for i in range(number):
             player = {
@@ -98,21 +99,27 @@ class ConvertJson():
         return players
 
 # Used to parse the data received from the API for the rosters. 
-# Should need reword to add the players, commented section should be close.
+# Needs to be able to have player positions. A few players make it not work
     def RosterParse(json):
-        #players = []
-        #for i in range(number):
-            #player = {
-                #"Name": json[1]['players'][str(i)]['player'][0][2]['name']['full'], 
-                #"Team": json[1]['players'][str(i)]['player'][0][5]['editorial_team_full_name'], 
-                #"Positions": json[1]['players'][str(i)]['player'][0][8]['display_position']
-            #}
-            #players.append(player)
+        players = []
+        for i in range(len(json[1]['roster']['0']['players']) - 1):
+            player = {
+                "Name": json[1]['roster']['0']['players'][str(i)]['player'][0][2]['name']['full'], 
+            }
+            #Some player have positions and teams on different positions
+            for j in range(5, len(json[1]['roster']['0']['players'][str(i)]['player'][0]) - 1):
+                if(type(json[1]['roster']['0']['players'][str(i)]['player'][0][j]) is dict):
+                    if(list(json[1]['roster']['0']['players'][str(i)]['player'][0][j].keys())[0] == 'editorial_team_full_name'):
+                        player['Team'] = json[1]['roster']['0']['players'][str(i)]['player'][0][j]['editorial_team_full_name']
+                    elif (list(json[1]['roster']['0']['players'][str(i)]['player'][0][j].keys())[0] == 'display_position'):
+                        player['Positions'] = json[1]['roster']['0']['players'][str(i)]['player'][0][j]['display_position']
+
+            players.append(player)
         team = {
             "Name": json[0][2]['name'], #works
             "Team logo": json[0][5]['team_logos'][0]['team_logo']['url'], #works
             "Nickname": json[0][19]['managers'][0]['manager']['nickname'], #works
-            "players": json[1]['roster']['0']['players'] #check
+            "players": players #check
         }
         return team
 
@@ -202,7 +209,7 @@ class UpdateData():
     def UpdateFreeAgents(self):
         yahoo_api._login()
         qtd = 15 # Ammount of free agents pulled from API
-        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=OR;count='+ str(qtd)
+        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=K;sort=OR;count='+ str(qtd)
         response = oauth.session.get(url, params={'format': 'json'})
         r = response.json()
 
@@ -219,7 +226,7 @@ class UpdateData():
         yahoo_api._login()
         data = [] #receives all the data
         #Needs one request per roster, takes a while.
-        for i in range(1, 13):
+        for i in range(1, 12):
             url = 'https://fantasysports.yahooapis.com/fantasy/v2/team/'+game_key+'.l.'+league_id+'.t.' + str(i) + '/roster'
             response = oauth.session.get(url, params={'format': 'json'})
             r = response.json()
@@ -313,13 +320,13 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        UD.UpdateLeagueStandings()
+        #UD.UpdateLeagueStandings()
         print('Standings update - Done') 
-        UD.UpdateMonthlyStandings()
+        #UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')
-        UD.UpdateLeagueTransactions()
+        #UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
-        UD.UpdateFreeAgents()
+        #UD.UpdateFreeAgents()
         print('Free Agents update - Done')
         #UD.MockDraft()
         #print('Draft update - Done')
