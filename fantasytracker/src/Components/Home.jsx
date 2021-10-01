@@ -29,7 +29,7 @@ function Home(){
             </table>
             <div className = "Categorias">
                 <h1>Latest Transactions</h1>
-                {transactions.Transactions.slice(transactions.Transactions.length - 5, transactions.Transactions.length).reverse().map((transaction) =>
+                {transactions.Transactions.slice(0, 5).map((transaction) =>
                         
                         transaction.Players.map((player) =>
                             <li>{player.Name} ({player.Positions}): {player.Source} {'->'} {player.Destination}</li>)
