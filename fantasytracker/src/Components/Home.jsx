@@ -29,13 +29,11 @@ function Home(){
             </table>
             <div className = "Categorias">
                 <h1>Latest Transactions</h1>
-                {transactions.Transactions.length>5 
-                        ? (transactions.Transactions.slice(transactions.length - 5, transactions.length).reverse().map((transaction) =>
-                        <li>{transaction.id}</li>
-                        ))
-                        : (transactions.Transactions.reverse().map((transaction) =>
-                        <li>{transaction.id}</li>
-                        ))
+                {transactions.Transactions.slice(transactions.Transactions.length - 5, transactions.Transactions.length).reverse().map((transaction) =>
+                        
+                        transaction.Players.map((player) =>
+                            <li>{player.Name} ({player.Positions}): {player.Source} {'->'} {player.Destination}</li>)
+                        )
                 }
                 <h1>Top Free Agents</h1>
                 {

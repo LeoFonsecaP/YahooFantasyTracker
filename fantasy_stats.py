@@ -57,18 +57,50 @@ class ConvertJson():
 
         return data
 
-# Used to parse the data received from the API for the transactions. Needs rework once real transactions are made and
-# I have a real understanding of how the data is returned.
+# Used to parse the data received from the API for the transactions. Might need trade rework
     def TransactionsParse(json):
         transactions = []
         for i in range(json[1]['transactions']['count']):
-            transaction= {
-                "id": json[1]['transactions'][str(i)]['transaction'][0]['transaction_id'], #works
-                "type": json[1]['transactions'][str(i)]['transaction'][0]['type'], #works
+            if(json[1]['transactions'][str(i)]['transaction'][0]['type'] != "commish"):
+                players = []
+                for j in range(json[1]['transactions'][str(i)]['transaction'][1]['players']['count']):
+                    player = {
+                        "Name": json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][0][2]['name']['full'],
+                        "Positions": json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][0][4]['display_position'],
+                    }
+                    if isinstance(json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data'], list):
+                        player['Source type'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data'][0]['source_type']
+                        player['Destination type'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data'][0]['destination_type']
+                        if player['Destination type'] == "team":
+                            player['Destination'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data'][0]['destination_team_name']
+                        else:
+                            player['Destination'] = "Free Agent"
+
+                        if player['Source type'] == "team":
+                            player['Source'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data'][0]['source_team_name']
+                        else:
+                            player['Source'] = "Free Agent"
+                            
+                    else:
+                        player['Source type'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data']['source_type']
+                        player['Destination type'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data']['destination_type']
+                        if player['Destination type'] == "team":
+                            player['Destination'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data']['destination_team_name']
+                        else:
+                            player['Destination'] = "Free Agent"
+
+                        if player['Source type'] == "team":
+                            player['Source'] = json[1]['transactions'][str(i)]['transaction'][1]['players'][str(j)]['player'][1]['transaction_data']['source_team_name']
+                        else:
+                            player['Source'] = "Free Agent"
+
+                    players.append(player)
+                transaction= {
+                    "Type": json[1]['transactions'][str(i)]['transaction'][0]['type'], #works
+                    "Players": players
                 }
-            transactions.append(transaction)
+                transactions.append(transaction)
         data = {
-            "Number Of Transactions": json[1]['transactions']['count'], #make sure no weird transactions
             "Last Updated": datetime.now().strftime("%d/%m/%y %H:%M:%S"), #works
             "Transactions": transactions
         }
@@ -193,7 +225,7 @@ class UpdateData():
         if Path(path).is_file(): #Makes sure that transactions.json exists
             load_file = open(path) # load old_transactions
             old_transactions = json.load(load_file)
-            new = dict(set(data) - set(old_transactions)) #New transactions = new transactions - old transactions
+            new = data['Transactions'][0:len(data['Transactions']) - len(old_transactions['Transactions'])] #New transactions = new transactions - old transactions
             load_file.close()
 
         with open(path, 'w') as outfile:
@@ -318,17 +350,17 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        UD.UpdateLeagueStandings()
+        #UD.UpdateLeagueStandings()
         print('Standings update - Done') 
-        UD.UpdateMonthlyStandings()
+        #UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')
         UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
-        UD.UpdateFreeAgents() # Not getting any players
+        #UD.UpdateFreeAgents() # Not getting any players
         print('Free Agents update - Done')
         #UD.MockDraft()
         #print('Draft update - Done')
-        UD.UpdateRosters() #Works
+        #UD.UpdateRosters() #Works
         print('Rosters update - Done')
         print('Update Complete')
 
