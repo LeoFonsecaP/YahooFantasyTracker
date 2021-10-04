@@ -231,10 +231,16 @@ td{
   border: 2px solid black;
 }
 
-.transactions img{
-width: 70%;
-display: block;
-margin: 20px auto;
+.transactions{
+  min-height: 75vh;
+  margin: 3% 6%;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
+}
+.t{
+  text-align: center;
 }
 
 @media (max-width:750px){
@@ -268,6 +274,9 @@ margin: 20px auto;
   .rosters{
     justify-content: center;
   }
+  .transactions{
+    margin-left: -30px;
+  }
 }
 @media (max-width: 900px){
   .Season1{
@@ -277,6 +286,8 @@ margin: 20px auto;
   }
   .standings{
     justify-content: center;
-
+  }
+  .transactions{
+    justify-content: center;
   }
 }
