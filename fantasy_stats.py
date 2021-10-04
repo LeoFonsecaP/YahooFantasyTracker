@@ -109,13 +109,20 @@ class ConvertJson():
 # Used to parse the data received from the API for the free agents. Should need no rework.
     def FreeAgentsParse(json):
         players = []
-        for i in range(len(json[1]['players'])):
+        for i in range(len(json[1]['players'])-1):
             player = {
                 "Name": json[1]['players'][str(i)]['player'][0][2]['name']['full'], #works
-                "Team": json[1]['players'][str(i)]['player'][0][5]['editorial_team_full_name'], #works
-                "Positions": json[1]['players'][str(i)]['player'][0][8]['display_position'] #works
             }
+            #Some player have positions and teams on different positions
+            for j in range(5, len(json[1]['players'][str(i)]['player'][0]) - 1):
+                if(type(json[1]['players'][str(i)]['player'][0][j]) is dict):
+                    if(list(json[1]['players'][str(i)]['player'][0][j].keys())[0] == 'editorial_team_full_name'):
+                        player['Team'] = json[1]['players'][str(i)]['player'][0][j]['editorial_team_full_name']
+                    elif (list(json[1]['players'][str(i)]['player'][0][j].keys())[0] == 'display_position'):
+                        player['Positions'] = json[1]['players'][str(i)]['player'][0][j]['display_position']
+
             players.append(player)
+        print(players)
         return players
 
 # Used to parse the data received from the API for the draft prospects. Should need no rework.
@@ -354,9 +361,9 @@ class Bot():
         print('Standings update - Done') 
         #UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')
-        UD.UpdateLeagueTransactions()
+        #UD.UpdateLeagueTransactions()
         print('Transactions update - Done')
-        #UD.UpdateFreeAgents() # Not getting any players
+        UD.UpdateFreeAgents() # Not getting any players
         print('Free Agents update - Done')
         #UD.MockDraft()
         #print('Draft update - Done')

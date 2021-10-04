@@ -180,4 +180,5 @@ for i in range(len(Transactions)): # Goes through transactions
     
     api.update_status(tweet)
     time.sleep(10)
+    print("tweeted transactions\n")
 
