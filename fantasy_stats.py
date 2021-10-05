@@ -106,7 +106,7 @@ class ConvertJson():
         }
         return data
         
-# Used to parse the data received from the API for the free agents. Should need no rework.
+# Used to parse the data received from the API for the free agents. Works
     def FreeAgentsParse(json):
         players = []
         for i in range(len(json[1]['players'])-1):
@@ -122,7 +122,6 @@ class ConvertJson():
                         player['Positions'] = json[1]['players'][str(i)]['player'][0][j]['display_position']
 
             players.append(player)
-        print(players)
         return players
 
 # Used to parse the data received from the API for the draft prospects. Should need no rework.
@@ -136,8 +135,34 @@ class ConvertJson():
             players.append(player)
         return players
 
+# Used to parse the data received from the API for the league schedule.
+# Should work
+    def ScheduleParse(json):
+        matches = []
+        for i in range(6):
+            match = {
+                "Team1": json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['0']['team'][0][2]['name'],
+                "Team1 Points": float(json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['0']['team'][1]['team_points']['total']),
+                "Team1 Matches": json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['0']['team'][1]['team_remaining_games']['total']['remaining_games'],
+                "Team1 Projected": json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['0']['team'][1]['team_projected_points']['total'],
+
+                "Team2": json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['1']['team'][0][2]['name'],
+                "Team2 Points": float(json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['1']['team'][1]['team_points']['total']),
+                "Team2 Matches": json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['1']['team'][1]['team_remaining_games']['total']['remaining_games'],
+                "Team2 Projected": json[1]['scoreboard']['0']['matchups'][str(i)]['matchup']['0']['teams']['1']['team'][1]['team_projected_points']['total'],
+            }
+            matches.append(match)
+
+        Schedule = {
+            "Week": int(json[1]['scoreboard']['week']),
+            "Playoffs": json[1]['scoreboard']['0']['matchups']['0']['matchup']['is_playoffs'],
+            "Matches": matches
+        }
+        return Schedule
+
+
 # Used to parse the data received from the API for the rosters. 
-# Needs to be able to have player positions. A few players make it not work
+# Works
     def RosterParse(json):
         players = []
         for i in range(len(json[1]['roster']['0']['players']) - 1):
@@ -275,6 +300,31 @@ class UpdateData():
             json.dump(data, outfile) #stores the rosters in Rosters.json
         return
 
+
+# Function to update the schdule. Makes the request to the API, parses data via ScheduleParse and adds to the json file.
+# Should work.
+    def UpdateSchedule(self):
+        yahoo_api._login()
+        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/scoreboard'
+        response = oauth.session.get(url, params={'format': 'json'})
+        r = response.json()
+        data = ConvertJson.ScheduleParse(r['fantasy_content']['league'])
+
+        with open('Schedule.json', 'w') as outfile:
+            json.dump(data, outfile) #stores the Schedule in Schedule.json
+        
+        if(datetime.today().strftime('%A') == 'Monday'):
+            week = str(data['Week'] - 1)
+            url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/scoreboard;week='+week
+            response = oauth.session.get(url, params={'format': 'json'})
+            r = response.json()
+            data = ConvertJson.ScheduleParse(r['fantasy_content']['league'])
+
+            with open('PrevSchedule.json', 'w') as outfile:
+                json.dump(data, outfile) #stores the Schedule from the past week in PrevSchedule.json
+
+        return
+
 # Function to get a mock draft. Makes the request to the API, parses data via DraftParse and adds to the json file.
 # Works properly. Will not be used during the season. Pre season only, for bot tweet.
     def MockDraft(self):
@@ -357,17 +407,19 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        #UD.UpdateLeagueStandings()
+        UD.UpdateLeagueStandings()
         print('Standings update - Done') 
-        #UD.UpdateMonthlyStandings()
+        UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')
-        #UD.UpdateLeagueTransactions()
+        UD.UpdateLeagueTransactions() #Works
         print('Transactions update - Done')
-        UD.UpdateFreeAgents() # Not getting any players
+        UD.UpdateFreeAgents() #Works
         print('Free Agents update - Done')
+        UD.UpdateSchedule() #Should work
+        print('Schedule update - Done')
         #UD.MockDraft()
         #print('Draft update - Done')
-        #UD.UpdateRosters() #Works
+        UD.UpdateRosters() #Works
         print('Rosters update - Done')
         print('Update Complete')
 

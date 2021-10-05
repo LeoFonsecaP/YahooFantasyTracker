@@ -22,8 +22,9 @@ api = tweepy.API(auth)
 
 data_path = './fantasytracker/src/Components/Data' #Path to data folders
 draft = False
-season_started = False
 rosters = False
+season_started = False
+more_than_a_week = False
 
 # Handles tweets
 # ------------------------------------------------------------------------------------------------ #☺
@@ -116,6 +117,32 @@ if(datetime.today().strftime('%A') == 'Monday' and season_started == True): #Twe
     print("Tweeted Monthly Standings")
     time.sleep(30)
 
+
+    with open("Schedule.json") as S: # Loads Schedule information
+        Schedule = json.load(S)
+    
+    if Schedule['Playoffs'] == "1":
+        tweet = "THIS WEEK´S PLAYOFF MATCHES"# Starts thread
+    else:
+        tweet = "WEEK " + current_week + " MATCHUPS" # Starts thread
+    
+    original_tweet = api.update_status(tweet) # Posts original tweet
+
+    for i in range(6): #Goes through all matchups
+        tweet = "The " + Schedule['Matches'][i]['Team1'] + " (" + str(Schedule['Matches'][i]['Team1 Projected']) + " projected points, " + str(Schedule['Matches'][i]['Team1 Matches']) + " projected matches) "
+        rand = random.randint(1,3) # Decides what message will be tweeted
+        if(rand == 1):
+            tweet += "will face "
+        if(rand == 2):
+            tweet += "goes against "
+        if(rand == 3):
+            tweet += "faces off "
+        tweet += "the " + Schedule['Matches'][i]['Team2'] + " ( " + str(Schedule['Matches'][i]['Team2 Projected']) + " projected points, " + str(Schedule['Matches'][i]['Team2 Matches']) + " projected matches) "
+        original_tweet = api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the thread with the next matchup
+        time.sleep(10)
+    print("tweeted schedule\n")
+
+
     with open(data_path + "/freeagents/FreeAgents.json") as FA: # Loads Free Agents Information
         FreeAgents = json.load(FA)
     
@@ -128,6 +155,60 @@ if(datetime.today().strftime('%A') == 'Monday' and season_started == True): #Twe
     print("Tweeted top free agents")
     time.sleep(30)
 
+if(more_than_a_week == True):
+    with open("PrevSchedule.json") as S: # Loads Schedule information
+        PrevSchedule = json.load(S)
+
+    tweet = "WEEK " + str(PrevSchedule['Week']) + " MATCHUP RESULTS" # Starts thread
+    original_tweet = api.update_status(tweet) # Posts original tweet
+
+    for i in range(6): #Goes through all matchups
+        if PrevSchedule['Matches'][i]['Team1 Points'] > PrevSchedule['Matches'][i]['Team2 Points']:
+            winner = PrevSchedule['Matches'][i]['Team1']
+            winner_points = PrevSchedule['Matches'][i]['Team1 Points']
+            loser = PrevSchedule['Matches'][i]['Team2']
+            loser_points = PrevSchedule['Matches'][i]['Team2 Points']
+        else:
+            winner = PrevSchedule['Matches'][i]['Team2']
+            winner_points = PrevSchedule['Matches'][i]['Team2 Points']
+            loser = PrevSchedule['Matches'][i]['Team1']
+            loser_points = PrevSchedule['Matches'][i]['Team1 Points']
+
+        rand = random.randint(1,3) # Decides what message will be tweeted
+
+        tweet = "The " + winner
+        if(winner_points - loser_points >= 200):
+            if(rand == 1):
+                tweet += " blow out the "
+            if(rand == 2):
+                tweet += " destroy the  "
+            if(rand == 3):
+                tweet += " breeze through the "
+        elif(winner_points - loser_points <= 20):
+            if(rand == 1 or rand == 3):
+                tweet += " survive against the "
+            if(rand == 2):
+                tweet += " barely defeat the "
+        else:
+            if(rand == 1):
+                tweet += " beat the "
+            if(rand == 2):
+                tweet += " defeat the "
+            if(rand == 3):
+                tweet += " prevail against the "
+
+        tweet += loser + " in a " + str(winner_points) + " - " + str(loser_points)
+        if(winner_points - loser_points <= 20):
+            tweet += " nail bitter"
+        tweet += " win!"
+        if(winner_points - loser_points <= 10):
+            tweet += " A true fantasy classic!"
+        if PrevSchedule['Playoffs'] == "1":
+            tweet += "\nThe " + loser + " has been eliminated!\n"
+        original_tweet = api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the thread with the next matchup
+        time.sleep(10)
+    print("tweeted results\n")
+
 # Everyday tweets
 
 with open(data_path + "/transactions/newTransactions.json") as T: # Loads Transactions Information
@@ -137,7 +218,7 @@ Transactions.reverse() # Reverse
 
 for i in range(len(Transactions)): # Goes through transactions
     if(Transactions[i]['Type'] == 'add'): # If its an add
-        rand = random.randint(0,3) # Decides what message will tweet
+        rand = random.randint(0,3) # Decides what message will be tweeted
         if(rand == 0):
             tweet = "Free Agent " + Transactions[i]['Players'][0]['Name'] + " has agreed to a 1 year minimum contract with the "
             tweet += Transactions[i]['Players'][0]['Destination'] + ", sources tell NPSE"
@@ -152,7 +233,7 @@ for i in range(len(Transactions)): # Goes through transactions
             tweet += Transactions[i]['Players'][0]['Destination'] + " on a 1 year minimum contract, sources tell NPSE"
             
     if(Transactions[i]['Type'] == "add/drop"):  # If its an add/drop
-        rand = random.randint(0,2) # Decides what message will tweet
+        rand = random.randint(0,2) # Decides what message will be tweeted
         if(rand == 0):
             tweet = "The " + Transactions[i]['Players'][0]['Destination'] + " and " + Transactions[i]['Players'][1]['Name']
             tweet += " have agreed on a buyout. After clearing waivers, they will look to add " + Transactions[i]['Players'][0]['Name'] 
@@ -167,18 +248,19 @@ for i in range(len(Transactions)): # Goes through transactions
             tweet += Transactions[i]['Players'][1]['Name'] 
 
     if(Transactions[i]['Type'] == "drop"): # If its a drop
-        rand = random.randint(0,3) # Decides what message will tweet
+        rand = random.randint(0,3) # Decides what message will be tweeted
         if(rand == 0):
-            tweet = "The " + Transactions[i]['Players'][0]['Source'] + " and " + Transactions[i]['Players'][1]['Name']
+            tweet = "The " + Transactions[i]['Players'][0]['Source'] + " and " + Transactions[i]['Players'][0]['Name']
             tweet += " have agreed on a contract buyout, sources tell NPSE"
         if(rand == 1):
-            tweet = Transactions[i]['Players'][0]['Name'] + " has agreed on a contract buyout with the" +  Transactions[i]['Players'][0]['Source'] + ", sources tell NPSE"
+            tweet = Transactions[i]['Players'][0]['Name'] + " has agreed on a contract buyout with the " +  Transactions[i]['Players'][0]['Source'] + ", sources tell NPSE"
         if(rand == 2):
-            tweet = "The " + Transactions[i]['Players'][0]['Source'] + "and" + Transactions[i]['Players'][0]['Name']+ " are parting ways, sources tell NPSE"
+            tweet = "The " + Transactions[i]['Players'][0]['Source'] + " and " + Transactions[i]['Players'][0]['Name']+ " are parting ways, sources tell NPSE"
         if(rand == 3):
-            tweet = "The " + Transactions[i]['Players'][0]['Source'] + " are parting ways with " + Transactions[i]['Players'][1]['Name'] + ", sources tell NPSE"
+            tweet = "The " + Transactions[i]['Players'][0]['Source'] + " are parting ways with " + Transactions[i]['Players'][0]['Name'] + ", sources tell NPSE"
     
     api.update_status(tweet)
     time.sleep(10)
-    print("tweeted transactions\n")
+print("tweeted transactions\n")
+
 
