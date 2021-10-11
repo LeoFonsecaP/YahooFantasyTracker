@@ -1,1 +1,1 @@
-[{"Type": "add", "Players": [{"Name": "Tyrese Maxey", "Positions": "PG,SG", "Source type": "freeagents", "Destination type": "team", "Destination": "Feat Dame D.O.L.L.A", "Source": "Free Agent"}]}]
+[{"Type": "add/drop", "Players": [{"Name": "Terrence Ross", "Positions": "SG,SF", "Source type": "freeagents", "Destination type": "team", "Destination": "Pai do Lebron", "Source": "Free Agent"}, {"Name": "Jalen Suggs", "Positions": "PG,SG", "Source type": "team", "Destination type": "waivers", "Destination": "Free Agent", "Source": "Pai do Lebron"}]}]
