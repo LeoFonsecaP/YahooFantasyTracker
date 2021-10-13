@@ -259,6 +259,19 @@ for i in range(len(Transactions)): # Goes through transactions
         if(rand == 3):
             tweet = "The " + Transactions[i]['Players'][0]['Source'] + " are parting ways with " + Transactions[i]['Players'][0]['Name'] + ", sources tell NPSE"
     
+    if(Transactions[i]['Type'] == "trade"): # If its a trade
+        tweet = "The " + Transactions[i]['Players'][0]['Source'] + " are trading " + Transactions[i]['Players'][0]['Name'] #Starts the tweet
+
+        for j in range(1, len(Transactions[i]['Players'])): # Finds all players that will be traded from first team
+            if Transactions[i]['Players'][j]['Source'] == Transactions[i]['Players'][0]['Source']:
+                tweet += ", " + Transactions[i]['Players'][j]['Name']
+            else:
+                tweet += " to the " + Transactions[i]['Players'][j]['Source'] + " for " +  Transactions[i]['Players'][j]['Name']
+                break
+
+        for k in range(j+1, len(Transactions[i]['Players'])): # Finds all players that will be traded from second team
+            tweet += ", " + Transactions[i]['Players'][k]['Name']
+        tweet += "."
     api.update_status(tweet)
     time.sleep(10)
 print("tweeted transactions\n")

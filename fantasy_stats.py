@@ -57,7 +57,7 @@ class ConvertJson():
 
         return data
 
-# Used to parse the data received from the API for the transactions. Might need trade rework
+# Used to parse the data received from the API for the transactions. Works
     def TransactionsParse(json):
         transactions = []
         for i in range(json[1]['transactions']['count']):
@@ -244,7 +244,6 @@ class UpdateData():
         return
     
 # Function to update the league transactions. Makes the request to the API, parses data via TransactionsParse and adds to the json file.
-# Needs rework once real transactions are made.
     def UpdateLeagueTransactions(self):
         yahoo_api._login()
         url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/transactions'
@@ -259,7 +258,6 @@ class UpdateData():
             old_transactions = json.load(load_file)
             new = data['Transactions'][0:len(data['Transactions']) - len(old_transactions['Transactions'])] #New transactions = new transactions - old transactions
             load_file.close()
-
         with open(path, 'w') as outfile:
             json.dump(data, outfile) #stores all transactions in transactions.json
 
