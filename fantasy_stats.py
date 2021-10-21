@@ -266,16 +266,30 @@ class UpdateData():
         return
 
 # Function to update the league´s top free agents. Makes the request to the API, parses data via FreeAgentsParse and adds to the json file.
-# Not returning any players, check latter, could change qtd for a bigger list.
+# Works
     def UpdateFreeAgents(self):
         yahoo_api._login()
         qtd = 15 # Ammount of free agents pulled from API
-        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=OR;count='+ str(qtd)
+        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;status=FA;sort=AR;count='+ str(qtd)
         response = oauth.session.get(url, params={'format': 'json'})
         r = response.json()
         data = ConvertJson.FreeAgentsParse(r['fantasy_content']['league'])
 
         path = storage_path + '/freeagents/FreeAgents.json' # define path to the file containing the free agents
+        with open(path, 'w') as outfile:
+            json.dump(data, outfile) #stores the free agents in FreeAgents.json
+        return
+
+# Function to update the league´s top players. Makes the request to the API, parses data via FreeAgentsParse and adds to the json file.
+    def UpdateMVP(self):
+        yahoo_api._login()
+        qtd = 15 # Ammount of free agents pulled from API
+        url = 'https://fantasysports.yahooapis.com/fantasy/v2/league/'+game_key+'.l.'+league_id+'/players;sort=AR;count='+ str(qtd)
+        response = oauth.session.get(url, params={'format': 'json'})
+        r = response.json()
+        data = ConvertJson.FreeAgentsParse(r['fantasy_content']['league'])
+
+        path = storage_path + '/awardrace/MVP.json' # define path to the file containing the free agents
         with open(path, 'w') as outfile:
             json.dump(data, outfile) #stores the free agents in FreeAgents.json
         return
@@ -322,6 +336,8 @@ class UpdateData():
                 json.dump(data, outfile) #stores the Schedule from the past week in PrevSchedule.json
 
         return
+
+
 
 # Function to get a mock draft. Makes the request to the API, parses data via DraftParse and adds to the json file.
 # Works properly. Will not be used during the season. Pre season only, for bot tweet.
@@ -405,19 +421,21 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        UD.UpdateLeagueStandings()
+        #UD.UpdateLeagueStandings()
         print('Standings update - Done') 
-        UD.UpdateMonthlyStandings()
+        #UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')
-        UD.UpdateLeagueTransactions() #Works
+        #UD.UpdateLeagueTransactions() #Works
         print('Transactions update - Done')
         UD.UpdateFreeAgents() #Works
         print('Free Agents update - Done')
-        UD.UpdateSchedule() #Should work
+        UD.UpdateMVP() #Works
+        print('Free Agents update - Done')
+        #UD.UpdateSchedule() #Should work
         print('Schedule update - Done')
         #UD.MockDraft()
         #print('Draft update - Done')
-        UD.UpdateRosters() #Works
+        #UD.UpdateRosters() #Works
         print('Rosters update - Done')
         print('Update Complete')
 

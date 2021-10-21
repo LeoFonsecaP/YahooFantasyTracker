@@ -1,6 +1,8 @@
 import standings from './Data/standings/standings.json'
 import transactions from './Data/transactions/Transactions.json'
 import freeagents from './Data/freeagents/FreeAgents.json'
+import mvp from './Data/awardrace/MVP.json'
+
 function Home(){
     return(
         <div className="S1">
@@ -29,7 +31,7 @@ function Home(){
             </table>
             <div className = "Categorias">
                 <h1>Latest Transactions</h1>
-                {transactions.Transactions.slice(0, 5).map((transaction) =>
+                {transactions.Transactions.slice(0, 4).map((transaction) =>
                         
                         transaction.Players.map((player) =>
                             <li>{player.Name} ({player.Positions}): {player.Source} {'->'} {player.Destination}</li>)
@@ -37,9 +39,17 @@ function Home(){
                 }
                 <h1>Top Free Agents</h1>
                 {
-                        freeagents.map((FreeAgent) =>
+                        freeagents.slice(0,10).map((FreeAgent) =>
                         <div className = "freeagents">
                             <li>{FreeAgent.Name} ({FreeAgent.Positions}) - {FreeAgent.Team} </li>
+                        </div>
+                        )
+                }
+                <h1>MVP Race</h1>
+                {
+                        mvp.slice(0,10).map((Players) =>
+                        <div className = "MVP">
+                            <li>{Players.Name} ({Players.Positions}) - {Players.Team} </li>
                         </div>
                         )
                 }
