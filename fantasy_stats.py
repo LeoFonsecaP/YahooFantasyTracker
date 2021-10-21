@@ -421,21 +421,21 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        #UD.UpdateLeagueStandings()
+        UD.UpdateLeagueStandings()
         print('Standings update - Done') 
-        #UD.UpdateMonthlyStandings()
+        UD.UpdateMonthlyStandings()
         print('Monthly Standings update - Done')
-        #UD.UpdateLeagueTransactions() #Works
+        UD.UpdateLeagueTransactions() #Works
         print('Transactions update - Done')
         UD.UpdateFreeAgents() #Works
         print('Free Agents update - Done')
         UD.UpdateMVP() #Works
         print('Free Agents update - Done')
-        #UD.UpdateSchedule() #Should work
+        UD.UpdateSchedule() #Should work
         print('Schedule update - Done')
         #UD.MockDraft()
         #print('Draft update - Done')
-        #UD.UpdateRosters() #Works
+        UD.UpdateRosters() #Works
         print('Rosters update - Done')
         print('Update Complete')
 
