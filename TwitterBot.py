@@ -71,7 +71,62 @@ if(rosters):
         time.sleep(30)
     print('tweeted Rosters')
 
-if(datetime.today().strftime('%A') == 'Monday' and season_started == True): #Tweets made on monday
+if(datetime.today().strftime('%A') == 'Monday' and season_started == True): #Tweets made on monday+
+
+    if(more_than_a_week == True):
+        with open("PrevSchedule.json") as S: # Loads Schedule information
+            PrevSchedule = json.load(S)
+
+        tweet = "WEEK " + str(PrevSchedule['Week']) + " MATCHUP RESULTS" # Starts thread
+        original_tweet = api.update_status(tweet) # Posts original tweet
+
+        for i in range(6): #Goes through all matchups
+            if PrevSchedule['Matches'][i]['Team1 Points'] > PrevSchedule['Matches'][i]['Team2 Points']:
+                winner = PrevSchedule['Matches'][i]['Team1']
+                winner_points = PrevSchedule['Matches'][i]['Team1 Points']
+                loser = PrevSchedule['Matches'][i]['Team2']
+                loser_points = PrevSchedule['Matches'][i]['Team2 Points']
+            else:
+                winner = PrevSchedule['Matches'][i]['Team2']
+                winner_points = PrevSchedule['Matches'][i]['Team2 Points']
+                loser = PrevSchedule['Matches'][i]['Team1']
+                loser_points = PrevSchedule['Matches'][i]['Team1 Points']
+
+            rand = random.randint(1,3) # Decides what message will be tweeted
+
+            tweet = "The " + winner
+            if(winner_points - loser_points >= 200):
+                if(rand == 1):
+                    tweet += " blow out the "
+                if(rand == 2):
+                    tweet += " destroy the  "
+                if(rand == 3):
+                    tweet += " breeze through the "
+            elif(winner_points - loser_points <= 20):
+                if(rand == 1 or rand == 3):
+                    tweet += " survive against the "
+                if(rand == 2):
+                    tweet += " barely defeat the "
+            else:
+                if(rand == 1):
+                    tweet += " beat the "
+                if(rand == 2):
+                    tweet += " defeat the "
+                if(rand == 3):
+                    tweet += " prevail against the "
+
+            tweet += loser + " in a " + str(winner_points) + " - " + str(loser_points)
+            if(winner_points - loser_points <= 20):
+                tweet += " nail bitter"
+            tweet += " win!"
+            if(winner_points - loser_points <= 10):
+                tweet += " A true fantasy classic!"
+            if PrevSchedule['Playoffs'] == "1":
+                tweet += "\nThe " + loser + " has been eliminated!\n"
+            original_tweet = api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the thread with the next matchup
+            time.sleep(10)
+        print("tweeted results\n")
+
 
     with open(data_path + "/standings/standings.json") as S: # Loads Current Standings Information
         Standings = json.load(S)
@@ -142,60 +197,7 @@ if(datetime.today().strftime('%A') == 'Monday' and season_started == True): #Twe
         time.sleep(10)
     print("tweeted schedule\n")
 
-    if(more_than_a_week == True):
-        with open("PrevSchedule.json") as S: # Loads Schedule information
-            PrevSchedule = json.load(S)
-
-        tweet = "WEEK " + str(PrevSchedule['Week']) + " MATCHUP RESULTS" # Starts thread
-        original_tweet = api.update_status(tweet) # Posts original tweet
-
-        for i in range(6): #Goes through all matchups
-            if PrevSchedule['Matches'][i]['Team1 Points'] > PrevSchedule['Matches'][i]['Team2 Points']:
-                winner = PrevSchedule['Matches'][i]['Team1']
-                winner_points = PrevSchedule['Matches'][i]['Team1 Points']
-                loser = PrevSchedule['Matches'][i]['Team2']
-                loser_points = PrevSchedule['Matches'][i]['Team2 Points']
-            else:
-                winner = PrevSchedule['Matches'][i]['Team2']
-                winner_points = PrevSchedule['Matches'][i]['Team2 Points']
-                loser = PrevSchedule['Matches'][i]['Team1']
-                loser_points = PrevSchedule['Matches'][i]['Team1 Points']
-
-            rand = random.randint(1,3) # Decides what message will be tweeted
-
-            tweet = "The " + winner
-            if(winner_points - loser_points >= 200):
-                if(rand == 1):
-                    tweet += " blow out the "
-                if(rand == 2):
-                    tweet += " destroy the  "
-                if(rand == 3):
-                    tweet += " breeze through the "
-            elif(winner_points - loser_points <= 20):
-                if(rand == 1 or rand == 3):
-                    tweet += " survive against the "
-                if(rand == 2):
-                    tweet += " barely defeat the "
-            else:
-                if(rand == 1):
-                    tweet += " beat the "
-                if(rand == 2):
-                    tweet += " defeat the "
-                if(rand == 3):
-                    tweet += " prevail against the "
-
-            tweet += loser + " in a " + str(winner_points) + " - " + str(loser_points)
-            if(winner_points - loser_points <= 20):
-                tweet += " nail bitter"
-            tweet += " win!"
-            if(winner_points - loser_points <= 10):
-                tweet += " A true fantasy classic!"
-            if PrevSchedule['Playoffs'] == "1":
-                tweet += "\nThe " + loser + " has been eliminated!\n"
-            original_tweet = api.update_status(status=tweet, in_reply_to_status_id = original_tweet.id) #Adds a reply to the thread with the next matchup
-            time.sleep(10)
-        print("tweeted results\n")
-
+    
     with open(data_path + "/freeagents/FreeAgents.json") as FA: # Loads Free Agents Information
         FreeAgents = json.load(FA)
     
