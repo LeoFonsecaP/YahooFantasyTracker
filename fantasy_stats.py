@@ -45,7 +45,7 @@ class ConvertJson():
             data = {
                 "current_week": json[0]['current_week'], #works
                 "Last Updated": datetime.now().strftime("%d/%m/%y %H:%M:%S"), #works
-                "standings": sorted(teams, key=lambda x: x['Wins']) #works, order by percentage when league starts
+                "standings": sorted(teams, key=lambda x: (-x['Wins'], -x['Points For'])) #works, order by percentage when league starts
 
             }
         else:
@@ -238,7 +238,7 @@ class UpdateData():
             else: #Has wins and losses, calculate percentage
                 data['standings'][i]['Percentage'] = (data['standings'][i]['Wins'] * 100)/(data['standings'][i]['Wins']+data['standings'][i]['Losses'])
         
-        data = sorted(data['standings'], key=lambda x: -x['Wins']) # sort by wins. Should be percentage and points for
+        data = sorted(data['standings'], key=lambda x: (-x['Wins'], -x['Points For'])) # sort by wins. Should be percentage and points for
         with open(storage_path + "/standings/" + datetime.now().strftime("%b") + '.json', 'w') as outfile:
             json.dump(data, outfile) #Stores the data from this months standings on "name of the month".json
         return
@@ -421,9 +421,9 @@ class Bot():
 
         UD.UpdateYahooLeagueInfo()
         print('League Info update - Done')                   
-        UD.UpdateLeagueStandings()
+        UD.UpdateLeagueStandings() #Works
         print('Standings update - Done') 
-        UD.UpdateMonthlyStandings()
+        UD.UpdateMonthlyStandings() #Works
         print('Monthly Standings update - Done')
         UD.UpdateLeagueTransactions() #Works
         print('Transactions update - Done')
