@@ -52,7 +52,7 @@ class ConvertJson():
             data = {
                 "current_week": json[0]['current_week'], #works
                 "Last Updated": datetime.now().strftime("%d/%m/%y %H:%M:%S"), #works
-                "standings": sorted(teams, key=lambda x: x['Name']) #works
+                "standings": sorted(teams, key=lambda x: x['Nickname']) #works
             }
 
         return data
@@ -224,12 +224,13 @@ class UpdateData():
         load_file = open(path) # load start.json
         start = json.load(load_file) # loads start of the month standings from start.json
         load_file.close()
-
+        start['standings'] = sorted(start['standings'], key=lambda x: x['Nickname'])
         #for all 12 teams, subtract current statistics from the ones at the start of the month, getting stats from this month
-        for i in range(12): 
+        for i in range(12):
             data['standings'][i]['Wins'] -= start['standings'][i]['Wins'] #Current wins - wins at start of the month
             data['standings'][i]['Losses'] -= start['standings'][i]['Losses'] 
             data['standings'][i]['Points For'] -= start['standings'][i]['Points For']
+            data['standings'][i]['Points For'] = round(data['standings'][i]['Points For'], 1)
             data['standings'][i]['Points Against'] -= start['standings'][i]['Points Against']
             if(data['standings'][i]['Wins'] == 0): #Has no wins
                 data['standings'][i]['Percentage'] = 0
@@ -237,8 +238,10 @@ class UpdateData():
                 data['standings'][i]['Percentage'] = 100
             else: #Has wins and losses, calculate percentage
                 data['standings'][i]['Percentage'] = (data['standings'][i]['Wins'] * 100)/(data['standings'][i]['Wins']+data['standings'][i]['Losses'])
-        
+
         data = sorted(data['standings'], key=lambda x: (-x['Wins'], -x['Points For'])) # sort by wins. Should be percentage and points for
+        for i in range(12):
+            data[i]['Rank'] = str(i+1)
         with open(storage_path + "/standings/" + datetime.now().strftime("%b") + '.json', 'w') as outfile:
             json.dump(data, outfile) #Stores the data from this months standings on "name of the month".json
         return
@@ -425,7 +428,7 @@ class Bot():
         print('Standings update - Done') 
         UD.UpdateMonthlyStandings() #Works
         print('Monthly Standings update - Done')
-        UD.UpdateLeagueTransactions() #Works
+        #UD.UpdateLeagueTransactions() #Works
         print('Transactions update - Done')
         UD.UpdateFreeAgents() #Works
         print('Free Agents update - Done')
